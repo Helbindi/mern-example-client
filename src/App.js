@@ -1,27 +1,21 @@
-import React from "react";
+import React from 'react';
+import { Container } from '@material-ui/core';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-// We use Route in order to define the different routes of our application
-import { Route } from "react-router-dom";
+import Home from './components/Home/Home';
+import Navbar from './components/Navbar/Navbar';
+import Auth from './components/Auth/Auth';
 
-// We import all the components we need in our app
-import Navbar from "./components/navbar";
-import Edit from "./components/edit";
-import Create from "./components/create";
-import RecordList from "./components/recordList";
-
-const App = () => {
-  return (
-    <div>
+const App = () => (
+  <BrowserRouter>
+    <Container maxWidth="lg">
       <Navbar />
-      <Route exact path="/">
-        <RecordList />
-      </Route>
-      <Route path="/edit/:id" component={Edit} />
-      <Route path="/create">
-        <Create />
-      </Route>
-    </div>
-  );
-};
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/auth" exact component={Auth} />
+      </Switch>
+    </Container>
+  </BrowserRouter>
+);
 
 export default App;
