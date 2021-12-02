@@ -10,6 +10,10 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px 50px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
   },
   heading: {
     color: 'rgba(0,183,255, 1)',
@@ -21,12 +25,15 @@ export default makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     justifyContent: 'flex-end',
-    width: '400px',
   },
   profile: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '400px',
+    width: '250px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
   },
   userName: {
     display: 'flex',

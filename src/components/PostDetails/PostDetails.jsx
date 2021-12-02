@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useHistory } from 'react-router-dom';
 
+import Comments from './Comments.js';
 import { getPost, getPostsBySearch } from '../../actions/posts';
 import useStyles from './styles';
 
@@ -18,12 +19,10 @@ const Post = () => {
     dispatch(getPost(id));
   }, [id]);
 
-  // TODO - getPostsBySearch not working atm
   useEffect(() => {
-    console.log(post);
-    // if (post) {
-    //   dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
-    // }
+    if (post) {
+      dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+    }
   }, [post]);
 
   if (!post) return null;
@@ -50,7 +49,9 @@ const Post = () => {
           <Typography variant="h6">Created by: {post.username}</Typography>
           <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
           <Divider style={{ margin: '20px 0' }} />
-          <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
+          
+          <Comments post={post} />
+
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
