@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper } from '@material-ui/core';
+import { TextField, Button, Typography, Paper, Radio ,RadioGroup, FormControl, FormLabel, FormControlLabel } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
+import SR from '../../images/SR.jpg';
 
 import { createPost, updatePost } from '../../actions/posts';
 import useStyles from './styles';
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [postData, setPostData] = useState({ title: '', message: '', tags: [] });
+  const [postData, setPostData] = useState({ title: '', message: '', tags: [], mode: '' });
   const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null));
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -29,10 +30,10 @@ const Form = ({ currentId, setCurrentId }) => {
     e.preventDefault();
 
     if (currentId === 0) {
-      dispatch(createPost({ ...postData, name: user?.result?.username }, history));
+      dispatch(createPost({ ...postData, username: user?.result?.username }, history));
       clear();
     } else {
-      dispatch(updatePost(currentId, { ...postData, username: user?.result?.username }));
+      dispatch(updatePost(currentId, { ...postData }));
       clear();
     }
   };
@@ -72,6 +73,22 @@ const Form = ({ currentId, setCurrentId }) => {
             onDelete={(tag) => handleDelete(tag)}
           />
         </div>
+
+        <FormControl component="fieldset" className={classes.radio}>
+          <FormLabel component="legend">Game Mode</FormLabel>
+          <RadioGroup 
+            row aria-label="mode" 
+            name="controlled-radio-buttons-group"
+            value={postData.mode}
+            onChange={(e) => setPostData({ ...postData, mode: e.target.value })}>
+
+            <FormControlLabel value="ranked" control={<Radio />} label="Ranked" />
+            <FormControlLabel value="normal" control={<Radio />} label="Normal" />
+            <FormControlLabel value="aram" control={<Radio />} label="ARAM" />
+            <FormControlLabel value="event" control={<Radio />} label="Event" />
+          </RadioGroup>
+        </FormControl>
+
         <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
       </form>

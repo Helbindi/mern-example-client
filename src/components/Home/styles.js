@@ -7,6 +7,9 @@ export default makeStyles((theme) => ({
     display: 'flex',
     padding: '16px',
   },
+  buttonSubmit: {
+    marginBottom: '0.5em',
+  },
   pagination: {
     borderRadius: 4,
     marginTop: '1rem',

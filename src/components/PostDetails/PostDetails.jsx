@@ -7,6 +7,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import Comments from './Comments.js';
 import { getPost, getPostsBySearch } from '../../actions/posts';
 import useStyles from './styles';
+import image from '../../images/party.jpg';
 
 const Post = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -40,7 +41,7 @@ const Post = () => {
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
   return (
-    <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
+    <Paper style={{ margin: '1em auto', padding: '1em', borderRadius: '15px', maxWidth: '1400px' }} elevation={6}>
       <div className={classes.card}>
         <div className={classes.section}>
           <Typography variant="h3" component="h2">{post?.title}</Typography>
@@ -55,7 +56,7 @@ const Post = () => {
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
-          <img className={classes.media} src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
+          <img className={classes.media} src={image} alt={post.title} />
         </div>
       </div>
       {!!recommendedPosts.length && (
@@ -64,7 +65,7 @@ const Post = () => {
           <Divider />
           <div className={classes.recommendedPosts}>
             {recommendedPosts.map(({ title, username, message, likes, _id }) => (
-              <div style={{ margin: '20px', cursor: 'pointer' }} onClick={() => openPost(_id)} key={_id}>
+              <div className={classes.recommendedCards} onClick={() => openPost(_id)} key={_id}>
                 <Typography gutterBottom variant="h6">{title}</Typography>
                 <Typography gutterBottom variant="subtitle2">{username}</Typography>
                 <Typography gutterBottom variant="subtitle2">{message}</Typography>

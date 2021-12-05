@@ -19,6 +19,10 @@ export default makeStyles((theme) => ({
     margin: '10px 0',
   },
   buttonSubmit: {
-    marginBottom: 10,
+    marginBottom: '0.5em',
   },
+  radio: {
+    padding: theme.spacing(2),
+    margin: '10px 0',
+  }
 }));

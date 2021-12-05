@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 import { likePost, deletePost } from '../../../actions/posts';
 import useStyles from './styles';
+import image from '../../../images/party.jpg';
 
 const Post = ({ post, setCurrentId }) => {
   const [likes, setLikes] = useState(post?.likes);
@@ -57,9 +58,9 @@ const Post = ({ post, setCurrentId }) => {
         className={classes.cardAction}
         onClick={openPost}
       >
-        <CardMedia className={classes.media} image={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+        <CardMedia className={classes.media} image={image} title={post.title} />
         <div className={classes.overlay}>
-          <Typography variant="h6">{post.username}</Typography>
+          <Typography variant="h6">{post?.username}</Typography>
           <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
         </div>
         {(userId === post?.creator) && (

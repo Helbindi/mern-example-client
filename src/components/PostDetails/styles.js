@@ -6,7 +6,6 @@ export default makeStyles((theme) => ({
     objectFit: 'cover',
     width: '100%',
     maxHeight: '400px',
-
   },
   card: {
     display: 'flex',
@@ -32,6 +31,12 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
+  },
+  recommendedCards: {
+    padding: '1em',
+    margin: '1em',
+    cursor: 'pointer',
+    border: '2px solid black',
   },
   loadingPaper: {
     display: 'flex',

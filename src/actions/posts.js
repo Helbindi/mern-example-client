@@ -36,7 +36,7 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
-};;
+};
 
 export const createPost = (post, history) => async (dispatch) => {
   try {
