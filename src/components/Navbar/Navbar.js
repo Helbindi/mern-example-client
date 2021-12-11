@@ -34,6 +34,8 @@ const Navbar = () => {
     setUser(JSON.parse(localStorage.getItem('profile')));
   }, [location]);
 
+  const openUser = (userID) => history.push(`/user/${userID}`);
+
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
@@ -42,7 +44,7 @@ const Navbar = () => {
       <Toolbar className={classes.toolbar}>
         {user?.result ? (
           <div className={classes.profile}>
-            <Avatar className={classes.purple} alt={user?.result.name} src={user?.result.imageUrl}>{user?.result.username.charAt(0)}</Avatar>
+            <Avatar className={classes.purple} alt={user?.result.name} src={user?.result.imageUrl} onClick={() => openUser(user?.result?._id)}>{user?.result.username.charAt(0)}</Avatar>
             <Typography className={classes.userName} variant="h6">{user?.result.username}</Typography>
             <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
           </div>

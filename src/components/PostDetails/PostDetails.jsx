@@ -22,13 +22,15 @@ const Post = () => {
 
   useEffect(() => {
     if (post) {
-      dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+      // get all posts that uses the same game mode and tags.
+      dispatch(getPostsBySearch({ search: post?.mode, tags: post?.tags.join(',') }));
     }
   }, [post]);
 
   if (!post) return null;
 
   const openPost = (_id) => history.push(`/posts/${_id}`);
+  const openUser = (userID) => history.push(`/user/${userID}`);
 
   if (isLoading) {
     return (
@@ -38,16 +40,17 @@ const Post = () => {
     );
   }
 
+  // filter out User of main post from recommeneded posts.
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
   return (
     <Paper style={{ margin: '1em auto', padding: '1em', borderRadius: '15px', maxWidth: '1400px' }} elevation={6}>
       <div className={classes.card}>
         <div className={classes.section}>
-          <Typography variant="h3" component="h2">{post?.title}</Typography>
+          <Typography variant="h3" component="h2">{post.mode.toUpperCase()}: {post?.title}</Typography>
           <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
           <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
-          <Typography variant="h6">Created by: {post.username}</Typography>
+          <Typography variant="h6">Created by: <span style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={() => openUser(post.creator)}>{post.username}</span></Typography>
           <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
           <Divider style={{ margin: '20px 0' }} />
           
@@ -56,7 +59,7 @@ const Post = () => {
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>
-          <img className={classes.media} src={image} alt={post.title} />
+          <img className={classes.media} src={image} alt='background' />
         </div>
       </div>
       {!!recommendedPosts.length && (
@@ -64,13 +67,13 @@ const Post = () => {
           <Typography gutterBottom variant="h5">You might also like:</Typography>
           <Divider />
           <div className={classes.recommendedPosts}>
-            {recommendedPosts.map(({ title, username, message, likes, _id }) => (
+            {recommendedPosts.map(({ title, tags, message, likes, _id }) => (
               <div className={classes.recommendedCards} onClick={() => openPost(_id)} key={_id}>
                 <Typography gutterBottom variant="h6">{title}</Typography>
-                <Typography gutterBottom variant="subtitle2">{username}</Typography>
+                <Typography gutterBottom variant="subtitle1" color="textSecondary" component="h2">{tags.map((tag) => `#${tag} `)}</Typography>
                 <Typography gutterBottom variant="subtitle2">{message}</Typography>
                 <Typography gutterBottom variant="subtitle1">Likes: {likes.length}</Typography>
-                <img src={'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} width="200px" />
+                <img src={image} width="200px" alt='background'/>
               </div>
             ))}
           </div>

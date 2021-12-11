@@ -1,6 +1,13 @@
-import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, CREATE, UPDATE, DELETE, LIKE, COMMENT } from '../constants/actionTypes';
+import { START_LOADING, END_LOADING, FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, FETCH_BY_USER, CREATE, UPDATE, DELETE, LIKE, COMMENT } from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
+/*
+  1. dispatch: Redux store runs the reducer function when dispatching an action.
+  2. type: type of action that is being called to reducer.
+  3. payload: data that gets passed to reducer during dispatch.
+  4. api: API request using axios
+  5. actionTypes: use Variable instead of string literal because literals will not trigger helpful errors when misspelled.
+*/
 export const getPost = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
@@ -29,9 +36,21 @@ export const getPosts = (page) => async (dispatch) => {
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
+    const { data: { data, currentPage, numberOfPages } } = await api.fetchPostsBySearch(searchQuery);
 
-    dispatch({ type: FETCH_BY_SEARCH, payload: { data } });
+    dispatch({ type: FETCH_BY_SEARCH, payload: { data, currentPage, numberOfPages } });
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPostsByUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+    const { data: { data } } = await api.fetchPostsByUser(id);
+
+    dispatch({ type: FETCH_BY_USER, payload: { data } });
     dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);

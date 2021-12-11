@@ -3,7 +3,6 @@ import { TextField, Button, Typography, Paper, Radio ,RadioGroup, FormControl, F
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
-import SR from '../../images/SR.jpg';
 
 import { createPost, updatePost } from '../../actions/posts';
 import useStyles from './styles';
@@ -42,7 +41,7 @@ const Form = ({ currentId, setCurrentId }) => {
     return (
       <Paper className={classes.paper}>
         <Typography variant="h6" align="center">
-          Please Sign In to create your own posts and like other's post.
+          <a href='/auth'>Sign In</a> to create your own posts or comment and like other's post.
         </Typography>
       </Paper>
     );

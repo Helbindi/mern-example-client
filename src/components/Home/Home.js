@@ -28,13 +28,15 @@ const Home = () => {
 
   const searchPost = () => {
     if ((search.length > 0) || (tags.length > 0)) {
-      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
-      history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
+      dispatch(getPostsBySearch({ page, search, tags: tags.join(',') }));
+      history.push(`/posts/search?page=${page}&searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
+    } else {
+      history.push('/posts');
     }
   };
 
   const clear = () => {
-    history.push('/');
+    history.push('/posts');
   };
 
   const handleKeyPress = (e) => {
@@ -53,10 +55,25 @@ const Home = () => {
         <Grid container justifyContent="space-between" alignItems="stretch" spacing={3} className={classes.gridContainer}>
           <Grid item xs={12} sm={6} md={9}>
             <Posts setCurrentId={setCurrentId} />
+
+            {/* There is no search query being done */}
+            {(!searchQuery && !tags.length) && (
+              <Paper className={classes.pagination} elevation={6}>
+                <Pagination page={page} />
+              </Paper>
+            )}
+
+            {/* There is a search query being done */}
+            {(searchQuery || (tags.length > 0)) && (
+              <Paper className={classes.pagination} elevation={6}>
+                <Pagination page={page} search={search} tags={tags} isSearch={true}/>
+              </Paper>
+            )}
           </Grid>
+          
           <Grid item xs={12} sm={6} md={3}>
             <AppBar className={classes.appBarSearch} position="static" color="inherit">
-              <TextField onKeyDown={handleKeyPress} name="search" variant="outlined" label="Search Title" fullWidth value={search} onChange={(e) => setSearch(e.target.value)} />
+              <TextField onKeyDown={handleKeyPress} name="search" variant="outlined" label="Search Mode(ranked, etc)" fullWidth value={search} onChange={(e) => setSearch(e.target.value)} />
               <ChipInput
                 style={{ margin: '10px 0' }}
                 value={tags}
@@ -68,12 +85,8 @@ const Home = () => {
               <Button onClick={searchPost} className={classes.buttonSubmit} variant="contained" color="primary">Search</Button>
               <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
             </AppBar>
+
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            {(!searchQuery && !tags.length) && (
-              <Paper className={classes.pagination} elevation={6}>
-                <Pagination page={page} />
-              </Paper>
-            )}
           </Grid>
         </Grid>
       </Container>
