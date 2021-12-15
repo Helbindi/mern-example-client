@@ -21,9 +21,11 @@ export default makeStyles((theme) => ({
     flex: 1,
   },
   imageSection: {
-    marginLeft: '20px',
+    marginLeft: '1em',
+    paddingTop: '1em',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
+      paddingTop: 0,
     },
   },
   userPosts: {
@@ -53,5 +55,8 @@ export default makeStyles((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     padding: '10px 50px',
-  }
+  },
+  buttonSubmit: {
+    marginBottom: '0.5em',
+  },
 }));

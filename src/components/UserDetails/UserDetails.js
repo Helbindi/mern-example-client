@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Typography, CircularProgress, Divider, Grid } from '@material-ui/core/';
+import { Paper, Typography, CircularProgress, Divider, Grid, Button, TextField } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
 import { getPostsByUser } from '../../actions/posts';
 import Post from '../Posts/Post/Post';
 import useStyles from './styles';
-import image from '../../images/party.jpg';
+import image from '../../images/Nunu_2.jpg';
 import { fetchUser } from '../../api/index';
 
 function UserDetails() {
     const { posts, isLoading } = useSelector((state) => state.posts);
     const [user, setUser] = useState([]);
+    const [userData, setUserData] = useState({ username: '', email: '', message: '' });
+    const [isEdit, setIsEdit] = useState(false);
 
     const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
     const { id } = useParams();
+
+    const clear = () => {
+        setIsEdit(false);
+        setUserData( { username: '', email: '', message: '' } );
+    };
 
     useEffect(async() => {
         try {
@@ -43,8 +50,9 @@ function UserDetails() {
                 <div className={classes.section}>
                     <Typography variant="h3" component="h2">{user['username']}</Typography>
                     <Divider style={{ margin: '20px 0' }} />
-                    <Typography gutterBottom variant="body1" component="p"> TODO: User description/message </Typography>
+                    <Typography style={{padding: '0 20px'}} gutterBottom variant="body1" component="p"> {user['message'] || 'Hope to see you on the Rift soon!'} </Typography>
                 </div>
+
                 <div className={classes.imageSection}>
                     <img className={classes.media} src={image} alt='background' />
                 </div>

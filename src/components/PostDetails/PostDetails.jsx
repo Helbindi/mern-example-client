@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core/';
+import { Paper, Typography, CircularProgress, Divider, Grid } from '@material-ui/core/';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useHistory } from 'react-router-dom';
 
 import Comments from './Comments.js';
+import Post from '../Posts/Post/Post';
 import { getPost, getPostsBySearch } from '../../actions/posts';
 import useStyles from './styles';
-import image from '../../images/party.jpg';
+import image from '../../images/5v5.jpg';
 
-const Post = () => {
+const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -29,7 +30,6 @@ const Post = () => {
 
   if (!post) return null;
 
-  const openPost = (_id) => history.push(`/posts/${_id}`);
   const openUser = (userID) => history.push(`/user/${userID}`);
 
   if (isLoading) {
@@ -41,19 +41,21 @@ const Post = () => {
   }
 
   // filter out User of main post from recommeneded posts.
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id).slice(0,4);
 
   return (
     <Paper style={{ margin: '1em auto', padding: '1em', borderRadius: '15px', maxWidth: '1400px' }} elevation={6}>
       <div className={classes.card}>
         <div className={classes.section}>
           <Typography variant="h3" component="h2">{post.mode.toUpperCase()}: {post?.title}</Typography>
-          <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
-          <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
+          <Typography variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
           <Typography variant="h6">Created by: <span style={{cursor: 'pointer', textDecoration: 'underline'}} onClick={() => openUser(post.creator)}>{post.username}</span></Typography>
-          <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
+          <Typography gutterBottom variant="body1">{moment(post.createdAt).fromNow()}</Typography>
+          <Typography variant="body1" component="p">{post.message}</Typography>
           <Divider style={{ margin: '20px 0' }} />
           
+          <Typography gutterBottom variant="h6">Comment Section</Typography>
+          <Divider style={{ margin: '20px 0' }} />
           <Comments post={post} />
 
           <Divider style={{ margin: '20px 0' }} />
@@ -62,20 +64,21 @@ const Post = () => {
           <img className={classes.media} src={image} alt='background' />
         </div>
       </div>
+
       {!!recommendedPosts.length && (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">You might also like:</Typography>
           <Divider />
           <div className={classes.recommendedPosts}>
-            {recommendedPosts.map(({ title, tags, message, likes, _id }) => (
-              <div className={classes.recommendedCards} onClick={() => openPost(_id)} key={_id}>
-                <Typography gutterBottom variant="h6">{title}</Typography>
-                <Typography gutterBottom variant="subtitle1" color="textSecondary" component="h2">{tags.map((tag) => `#${tag} `)}</Typography>
-                <Typography gutterBottom variant="subtitle2">{message}</Typography>
-                <Typography gutterBottom variant="subtitle1">Likes: {likes.length}</Typography>
-                <img src={image} width="200px" alt='background'/>
-              </div>
-            ))}
+            {!!recommendedPosts.length && (
+            <Grid className={classes.container} container alignItems="stretch" spacing={3}>
+                {recommendedPosts?.map((post) => (
+                <Grid key={post._id} item xs={12} sm={12} md={6} lg={3}>
+                    <Post post={post} setCurrentId={id} />
+                </Grid>
+                ))}
+            </Grid>
+            )}
           </div>
         </div>
       )}
@@ -83,4 +86,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default PostDetails;

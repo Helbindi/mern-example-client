@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Typography, TextField, Button } from '@material-ui/core';
+import React, { useState, useEffect, useRef } from "react";
+import { Typography, TextField, Button, Paper } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 import { commentPost } from '../../actions/posts.js';
@@ -20,24 +20,31 @@ const Comments = ({ post }) => {
         setComment('');
         setComments(updateComments);
 
-        commentsRef.current.scrollIntoView({ behavior: 'smooth' });
+        // Use block: 'center' otherwise View is pushed to top or bottom of component container on smaller screens.
+        commentsRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
 
     return(
-        <div>
+        <>
             <div className={classes.commentsOuterContainer}>
                 <div className={classes.commentsInnerContainer}>
-                    <Typography gutterBottom variant="h6">Comment Section</Typography>
-                    {comments.map((c, i) => (
-                        <Typography key={i} style={{ wordWrap: "break-word" }} gutterBottom variant="subtitle1">
-                            <strong>{c.split(': ')[0]}: </strong> {c.split(':')[1]}
+                    {comments.map((comment, index) => (
+                        <Typography key={index} style={{ wordWrap: "break-word" }} gutterBottom variant="subtitle1">
+                            <strong>{comment.split(': ')[0]}: </strong> {comment.split(':')[1]}
                         </Typography>
                     ))}
                     <div ref={commentsRef} />
                 </div>
+
+                {user?.result?.username ? ''
+                    : <Paper className={classes.paper}>
+                        <Typography variant="h6" align="center">
+                        <a href='/auth'>Sign In</a> to leave a comment.
+                        </Typography>
+                    </Paper> }
                 
                 {user?.result?.username && (
-                    <div style={ {width: '70%'}}>
+                    <div className={classes.commentsForm}>
                         <Typography gutterBottom variant="h6">Write a Comment</Typography>
                         <TextField
                             fullWidth
@@ -59,7 +66,7 @@ const Comments = ({ post }) => {
                     </div>
                 )}
             </div>
-        </div>
+        </>
     )
 };
 

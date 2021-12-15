@@ -5,15 +5,15 @@ export default makeStyles((theme) => ({
     borderRadius: 4,
     marginBottom: '1rem',
     display: 'flex',
-    padding: '16px',
+    padding: '1em',
   },
   buttonSubmit: {
     marginBottom: '0.5em',
   },
   pagination: {
-    borderRadius: 4,
-    margin: '1rem auto',
-    padding: '16px',
+    borderRadius: 5,
+    margin: '1.5em auto',
+    padding: '1em',
     maxWidth: '500px',
   },
   gridContainer: {

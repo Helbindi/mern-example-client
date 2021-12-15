@@ -41,7 +41,7 @@ const Form = ({ currentId, setCurrentId }) => {
     return (
       <Paper className={classes.paper}>
         <Typography variant="h6" align="center">
-          <a href='/auth'>Sign In</a> to create your own posts or comment and like other's post.
+          <a href='/auth'>Sign In</a> to create your own Post or like another Post.
         </Typography>
       </Paper>
     );
